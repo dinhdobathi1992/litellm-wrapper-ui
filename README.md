@@ -23,7 +23,7 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 
 See Zen's LiteLLM Chat in action:
 
-![Demo of Zen's LiteLLM Chat](demo/demo.gif)
+<img src="demo/demo.gif" alt="Demo of Zen's LiteLLM Chat" width="800" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
 
 ## 📁 Supported File Extensions
 
