@@ -506,19 +506,12 @@
                             required
                         ></textarea>
                         <!-- File upload button -->
-                        <input type="file" id="fileInput" class="hidden" accept=".txt,.json,.yaml,.yml,.md,.csv,.log,.pdf,.docx,.xlsx,.xls,.jpg,.jpeg,.png,.gif,.bmp,.webp" />
+                        <input type="file" id="fileInput" class="hidden" />
                         <input type="hidden" id="fileName" name="file_name" />
                         <input type="hidden" id="fileContent" name="file_content" />
-                        <input type="hidden" id="isImageRequest" name="is_image_request" value="false" />
-                        <button type="button" id="fileButton" title="Attach file (PDF, DOCX, Excel, Images, Text files)" class="absolute bottom-3 right-16 flex items-center justify-center w-10 h-10 bg-gray-200 dark:bg-dark-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-dark-600 transition-all duration-200">
+                        <button type="button" id="fileButton" title="Attach file" class="absolute bottom-3 right-16 flex items-center justify-center w-10 h-10 bg-gray-200 dark:bg-dark-700 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-dark-600 transition-all duration-200">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l7.586-7.586a4 4 0 10-5.656-5.656l-7.586 7.586a6 6 0 108.485 8.485l6.586-6.586" />
-                            </svg>
-                        </button>
-                        <!-- Image generation button -->
-                        <button type="button" id="imageButton" title="Generate image" class="absolute bottom-3 right-28 flex items-center justify-center w-10 h-10 bg-purple-200 dark:bg-purple-700 text-purple-600 dark:text-purple-300 rounded-lg hover:bg-purple-300 dark:hover:bg-purple-600 transition-all duration-200">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </button>
                         <!-- Send button -->
@@ -967,36 +960,12 @@
         // File upload logic
         const fileInput = document.getElementById('fileInput');
         const fileButton = document.getElementById('fileButton');
-        const imageButton = document.getElementById('imageButton');
         const fileNameInput = document.getElementById('fileName');
         const fileContentInput = document.getElementById('fileContent');
-        const isImageRequestInput = document.getElementById('isImageRequest');
         const filePreview = document.getElementById('filePreview');
         let selectedFile = null;
-        let isImageMode = false;
 
-        fileButton.addEventListener('click', () => {
-            isImageMode = false;
-            isImageRequestInput.value = 'false';
-            imageButton.classList.remove('bg-purple-600', 'text-white');
-            imageButton.classList.add('bg-purple-200', 'dark:bg-purple-700', 'text-purple-600', 'dark:text-purple-300');
-            fileInput.click();
-        });
-
-        imageButton.addEventListener('click', () => {
-            isImageMode = !isImageMode;
-            if (isImageMode) {
-                isImageRequestInput.value = 'true';
-                imageButton.classList.remove('bg-purple-200', 'dark:bg-purple-700', 'text-purple-600', 'dark:text-purple-300');
-                imageButton.classList.add('bg-purple-600', 'text-white');
-                // Clear any selected file when switching to image mode
-                clearFile();
-            } else {
-                isImageRequestInput.value = 'false';
-                imageButton.classList.remove('bg-purple-600', 'text-white');
-                imageButton.classList.add('bg-purple-200', 'dark:bg-purple-700', 'text-purple-600', 'dark:text-purple-300');
-            }
-        });
+        fileButton.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', async function() {
             if (this.files && this.files[0]) {
                 selectedFile = this.files[0];
@@ -1028,11 +997,6 @@
             fileContentInput.value = '';
             filePreview.textContent = '';
             filePreview.classList.add('hidden');
-            // Reset image mode
-            isImageMode = false;
-            isImageRequestInput.value = 'false';
-            imageButton.classList.remove('bg-purple-600', 'text-white');
-            imageButton.classList.add('bg-purple-200', 'dark:bg-purple-700', 'text-purple-600', 'dark:text-purple-300');
         }
 
         // Render markdown content
@@ -1056,9 +1020,6 @@
                 
                 // Inline code
                 .replace(/`([^`]+)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm font-mono">$1</code>')
-                
-                // Images
-                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg shadow-md my-3" style="max-height: 400px;">')
                 
                 // Bullet points
                 .replace(/^• (.*$)/gim, '<li class="ml-4">• $1</li>')

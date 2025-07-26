@@ -2,7 +2,6 @@ import os
 import json
 import base64
 import uuid
-import io
 from typing import Optional
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -13,24 +12,9 @@ from dotenv import load_dotenv
 from starlette.middleware.sessions import SessionMiddleware
 from auth import SECRET_KEY, get_current_user, require_auth, login_google, auth_callback, logout
 
-# PDF and file processing imports
-try:
-    import PyPDF2
-    PDF_AVAILABLE = True
-except ImportError:
-    PDF_AVAILABLE = False
-
-try:
-    from PIL import Image
-    from docx import Document
-    import openpyxl
-    IMAGE_AVAILABLE = True
-except ImportError:
-    IMAGE_AVAILABLE = False
-
 load_dotenv()
 
-app = FastAPI(title="Zen's LiteLLM Chat App")
+app = FastAPI(title="LiteLLM Chat App")
 
 # Add session middleware
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
@@ -41,215 +25,17 @@ templates = Jinja2Templates(directory="templates")
 # Configuration
 LITELLM_API_BASE = os.getenv("LITELLM_API_BASE", "https://litellm.shared-services.adb.adi.tech")
 API_KEY = os.getenv("LITELLM_API_KEY")
-VERSION = os.getenv("APP_VERSION", "2.0.0")
+VERSION = os.getenv("APP_VERSION", "1.0.0")
 
-print("🚀 Zen's LiteLLM Chat App starting...")
+print("🚀 LiteLLM Chat App starting...")
 print(f"📦 Version: {VERSION}")
 print(f"🔗 API Base: {LITELLM_API_BASE}")
-print(f"📄 PDF Support: {'✅' if PDF_AVAILABLE else '❌'}")
-print(f"🖼️ Image Support: {'✅' if IMAGE_AVAILABLE else '❌'}")
 
 # In-memory storage for chat sessions (replace with database in production)
 chat_sessions = {}
 
 # Simple response cache for faster repeated queries
 response_cache = {}
-
-def process_file_content(file_data: bytes, file_name: str) -> str:
-    """Process different file types and extract text content"""
-    try:
-        file_extension = file_name.lower().split('.')[-1]
-        
-        # Text files
-        if file_extension in ['txt', 'json', 'yaml', 'yml', 'md', 'csv', 'log']:
-            try:
-                return file_data.decode('utf-8')
-            except UnicodeDecodeError:
-                return f"[Binary text file: {file_name}]"
-        
-        # PDF files
-        elif file_extension == 'pdf' and PDF_AVAILABLE:
-            try:
-                pdf_file = io.BytesIO(file_data)
-                pdf_reader = PyPDF2.PdfReader(pdf_file)
-                text_content = []
-                for page_num, page in enumerate(pdf_reader.pages, 1):
-                    text_content.append(f"--- Page {page_num} ---")
-                    text_content.append(page.extract_text())
-                return "\n".join(text_content)
-            except Exception as e:
-                return f"[PDF processing error: {str(e)}]"
-        
-        # Word documents
-        elif file_extension == 'docx' and IMAGE_AVAILABLE:
-            try:
-                doc = Document(io.BytesIO(file_data))
-                text_content = []
-                for paragraph in doc.paragraphs:
-                    if paragraph.text.strip():
-                        text_content.append(paragraph.text)
-                return "\n".join(text_content)
-            except Exception as e:
-                return f"[DOCX processing error: {str(e)}]"
-        
-        # Excel files
-        elif file_extension in ['xlsx', 'xls'] and IMAGE_AVAILABLE:
-            try:
-                workbook = openpyxl.load_workbook(io.BytesIO(file_data))
-                text_content = []
-                for sheet_name in workbook.sheetnames:
-                    sheet = workbook[sheet_name]
-                    text_content.append(f"--- Sheet: {sheet_name} ---")
-                    for row in sheet.iter_rows(values_only=True):
-                        if any(cell is not None for cell in row):
-                            text_content.append("\t".join(str(cell) if cell is not None else "" for cell in row))
-                return "\n".join(text_content)
-            except Exception as e:
-                return f"[Excel processing error: {str(e)}]"
-        
-        # Image files
-        elif file_extension in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'] and IMAGE_AVAILABLE:
-            try:
-                image = Image.open(io.BytesIO(file_data))
-                image_info = f"""
-Image Analysis:
-- Format: {image.format}
-- Size: {image.size[0]}x{image.size[1]} pixels
-- Mode: {image.mode}
-- File: {file_name}
-"""
-                return image_info
-            except Exception as e:
-                return f"[Image processing error: {str(e)}]"
-        
-        else:
-            return f"[Unsupported file type: {file_extension}]"
-            
-    except Exception as e:
-        return f"[File processing error: {str(e)}]"
-
-def is_image_generation_model(model: str) -> bool:
-    """Check if the model supports image generation"""
-    image_models = [
-        'dall-e-3', 'dall-e-2', 'dall-e',
-        'midjourney', 'stable-diffusion',
-        'gpt-4o-mini', 'gpt-4o', 'gpt-4'
-    ]
-    return any(img_model in model.lower() for img_model in image_models)
-
-def generate_image_prompt(user_message: str) -> str:
-    """Extract or enhance image generation prompt from user message"""
-    # Look for image generation keywords
-    image_keywords = ['generate image', 'create image', 'draw', 'picture', 'photo', 'image of']
-    
-    if any(keyword in user_message.lower() for keyword in image_keywords):
-        return user_message
-    else:
-        # Enhance the prompt for better image generation
-        return f"Create a high-quality, detailed image of: {user_message}"
-
-async def handle_image_generation(request: Request, message: str, model: str, session_id: str, file_content: Optional[str], file_name: Optional[str]):
-    """Handle image generation requests"""
-    user = require_auth(request)
-    
-    # Prepare the image generation prompt
-    image_prompt = generate_image_prompt(message)
-    
-    # Add file context if provided
-    if file_content and file_name:
-        try:
-            file_data = base64.b64decode(file_content)
-            file_text = process_file_content(file_data, file_name)
-            if file_text:
-                image_prompt = f"{image_prompt}\n\nContext from uploaded file ({file_name}):\n{file_text[:1000]}"
-        except Exception as e:
-            print(f"Error processing file for image generation: {e}")
-    
-    # Prepare payload for image generation
-    payload = {
-        "model": model,
-        "prompt": image_prompt,
-        "n": 1,
-        "size": "1024x1024",
-        "quality": "standard",
-        "response_format": "url"
-    }
-    
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {API_KEY}"
-    }
-    
-    try:
-        async with httpx.AsyncClient() as client:
-            # Try image generation endpoint first
-            response = await client.post(
-                f"{LITELLM_API_BASE}/images/generations",
-                json=payload,
-                headers=headers,
-                timeout=30.0
-            )
-            
-            if response.status_code == 404:
-                # Fallback to chat completions with image generation instruction
-                chat_payload = {
-                    "model": model,
-                    "messages": [
-                        {
-                            "role": "system",
-                            "content": "You are an AI assistant that can generate images. When asked to create an image, provide a detailed description and suggest using an image generation service."
-                        },
-                        {
-                            "role": "user",
-                            "content": f"Generate an image based on this description: {image_prompt}"
-                        }
-                    ],
-                    "stream": False,
-                    "max_tokens": 1000,
-                    "temperature": 0.7
-                }
-                
-                response = await client.post(
-                    f"{LITELLM_API_BASE}/chat/completions",
-                    json=chat_payload,
-                    headers=headers,
-                    timeout=15.0
-                )
-            
-            response.raise_for_status()
-            result = response.json()
-            
-            if "data" in result and result["data"]:
-                # Image generation successful
-                image_url = result["data"][0]["url"]
-                assistant_message = f"🎨 **Image Generated Successfully!**\n\n### 🖼️ **Generated Image**\n![Generated Image]({image_url})\n\n### 📝 **Prompt Used**\n{image_prompt}\n\n### 🚀 **Next Steps**\n• **Download** the image by right-clicking and selecting 'Save Image As'\n• **Share** the image URL with others\n• **Generate more** images by describing what you'd like to see"
-            else:
-                # Fallback to text response
-                assistant_message = result.get("choices", [{}])[0].get("message", {}).get("content", "Image generation completed.")
-            
-            # Add assistant message to session
-            assistant_msg = {
-                "role": "assistant",
-                "content": assistant_message,
-                "file_name": None,
-                "is_image_response": True
-            }
-            chat_sessions[session_id].append(assistant_msg)
-            
-            return {"content": assistant_message, "file_name": file_name, "is_image_response": True}
-            
-    except Exception as e:
-        error_message = f"🖼️ **Image Generation Error**\n\n### ❌ **Issue**\nFailed to generate image: {str(e)}\n\n### 💡 **Suggestions**\n• Try a different model that supports image generation\n• Check if your API key has image generation permissions\n• Ensure your prompt is clear and descriptive\n\n### 🚀 **Next Steps**\nTry asking for a text description instead or use a different model."
-        
-        assistant_msg = {
-            "role": "assistant",
-            "content": error_message,
-            "file_name": None,
-            "is_image_response": False
-        }
-        chat_sessions[session_id].append(assistant_msg)
-        
-        return {"error": error_message, "file_name": file_name}
 
 @app.get("/", response_class=HTMLResponse)
 async def chat_page(request: Request):
@@ -333,8 +119,7 @@ async def chat_completion(
     model: str = Form(...),
     session_id: str = Form(...),
     file_content: Optional[str] = Form(None),
-    file_name: Optional[str] = Form(None),
-    is_image_request: Optional[bool] = Form(False)
+    file_name: Optional[str] = Form(None)
 ):
     """Chat completion endpoint - requires authentication"""
     user = require_auth(request)
@@ -347,14 +132,9 @@ async def chat_completion(
     user_message = {
         "role": "user",
         "content": message,
-        "file_name": file_name if file_content else None,
-        "is_image_request": is_image_request
+        "file_name": file_name if file_content else None
     }
     chat_sessions[session_id].append(user_message)
-    
-    # Check if this is an image generation request
-    if is_image_request or is_image_generation_model(model):
-        return await handle_image_generation(request, message, model, session_id, file_content, file_name)
     
     # Prepare the message for LiteLLM
     user_content = message
@@ -378,7 +158,10 @@ async def chat_completion(
     if file_content and file_name:
         try:
             file_data = base64.b64decode(file_content)
-            file_text = process_file_content(file_data, file_name)
+            try:
+                file_text = file_data.decode('utf-8')
+            except Exception:
+                file_text = None
             if file_text:
                 if len(file_text) > max_file_chars:
                     file_text = file_text[:max_file_chars] + "\n... (truncated)"
