@@ -19,6 +19,12 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 - 📋 **Chat History** - Left sidebar with session management
 - 🎯 **Custom Model Selection** - ChatGPT-style dropdown for model selection
 
+## 🎬 Demo Session
+
+See Zen's LiteLLM Chat in action:
+
+![Demo of Zen's LiteLLM Chat](demo/demo.gif)
+
 ## 📁 Supported File Extensions
 
 The application supports a wide range of file formats for analysis and processing:
@@ -309,75 +315,4 @@ Make sure to update your Google OAuth2 redirect URIs to include your production 
 |----------|--------|-------------|---------------|
 | `/` | GET | Main chat interface | Yes |
 | `/login` | GET | Login page | No |
-| `/auth/google` | GET | Initiate Google OAuth | No |
-| `/auth/callback` | GET | OAuth callback handler | No |
-| `/logout` | GET | Logout user | Yes |
-| `/api/models` | GET | Get available models | Yes |
-| `/api/chat` | POST | Send chat message | Yes |
-| `/api/chat-history/{session_id}` | GET | Get chat history | Yes |
-| `/api/new-session` | POST | Create new session | Yes |
-
-## 🛠️ Development
-
-### Project Structure
-```
-litellm-wrapper-ui/
-├── main.py              # FastAPI application
-├── auth.py              # Authentication module with access control
-├── requirements.txt     # Python dependencies
-├── .env                 # Environment variables
-├── env.example          # Environment template
-├── templates/           # HTML templates
-│   ├── chat.html       # Main chat interface
-│   └── login.html      # Login page
-├── v1.0.0/             # Backup of v1.0.0
-├── v1.1.0/             # Backup of v1.1.0
-├── v1.2.0/             # Backup of v1.2.0
-└── README.md           # This file
-```
-
-### Running Tests
-```bash
-# Test the application
-curl http://localhost:8000/login
-curl http://localhost:8000/  # Should redirect to login
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👨‍💻 Author
-
-**ThiThi**
-- GitHub: [dinhdobathi1992](https://github.com/dinhdobathi1992/litellm-wrapper-ui)
-- Portfolio: [dinhdobathi.com](https://dinhdobathi.com)
-
-## 🔄 Version History
-
-- **v2.0.0** - Added PDF support, image generation, multi-format file processing, DALL-E integration
-- **v1.3.0** - Added email/domain access control, sticky layout, chat history sidebar, performance optimizations
-- **v1.2.0** - Added Google OAuth2 authentication, enhanced UI
-- **v1.1.0** - Enhanced UI, file upload, session management
-- **v1.0.0** - Initial release with basic chat functionality
-
-## 🆘 Support
-
-If you encounter any issues:
-1. Check the environment variables are correctly set
-2. Verify Google OAuth2 credentials are valid
-3. Ensure LiteLLM API is accessible
-4. Check the server logs for detailed error messages
-5. Verify access control settings if users can't log in
-
----
-
-**Powered by LiteLLM • v2.0.0** 
+| `/auth/google`
