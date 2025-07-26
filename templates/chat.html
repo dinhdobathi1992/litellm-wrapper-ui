@@ -338,23 +338,25 @@
             /* Mobile message input */
             .mobile-message-input {
                 padding: 0.75rem;
-                padding-right: 8rem; /* Space for buttons */
+                padding-right: 7rem; /* Space for buttons */
                 font-size: 16px; /* Prevent zoom on iOS */
                 border-radius: 1rem;
                 min-height: 44px; /* Touch-friendly height */
                 max-height: 120px;
                 resize: none;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
             
             /* Mobile buttons - larger touch targets */
             .mobile-button {
-                width: 40px;
-                height: 40px;
-                border-radius: 0.75rem;
+                width: 36px;
+                height: 36px;
+                border-radius: 0.5rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.875rem;
+                font-size: 0.75rem;
                 touch-action: manipulation;
                 flex-shrink: 0;
             }
@@ -485,6 +487,25 @@
             .typing-indicator-mobile {
                 padding: 0.5rem;
                 font-size: 0.875rem;
+            }
+            
+            /* Mobile text overflow fixes */
+            .mobile-text-overflow {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+            }
+            
+            /* Mobile welcome message */
+            .mobile-welcome-text {
+                font-size: 0.875rem;
+                line-height: 1.4;
+                padding: 0 1rem;
+            }
+            
+            /* Mobile input container */
+            .mobile-input-container {
+                padding: 0.5rem;
             }
         }
         
@@ -759,7 +780,7 @@
         
                             <!-- Message Input (Sticky Bottom) -->
                     <div class="border-t border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-900 shadow-sm sticky bottom-0 z-10 mobile-input-area">
-            <div class="max-w-4xl mx-auto px-4 lg:px-6 py-4">
+            <div class="max-w-4xl mx-auto px-4 lg:px-6 py-4 mobile-input-container">
                 <div class="glass-effect border border-gray-200 dark:border-dark-700 rounded-2xl p-6 shadow-sm">
                 <form id="chatForm" class="space-y-4">
                     <input type="hidden" id="sessionId" name="session_id" value="">
@@ -773,7 +794,7 @@
                             name="message"
                             rows="1"
                             class="message-input mobile-message-input w-full px-4 py-3 border border-gray-300 dark:border-dark-600 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-dark-800"
-                            placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
+                            placeholder="Type your message..."
                             required
                         ></textarea>
                         <!-- File upload button -->
@@ -782,7 +803,7 @@
                         <input type="hidden" id="fileContent" name="file_content" />
                         <input type="hidden" id="isImageRequest" name="is_image_request" value="false" />
                         <!-- Button container for better mobile layout -->
-                        <div class="absolute bottom-2 right-2 flex items-center space-x-1">
+                        <div class="absolute bottom-2 right-2 flex items-center space-x-0.5">
                             <!-- File upload button -->
                             <button type="button" id="fileButton" title="Attach file" class="mobile-button bg-gray-200 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-dark-600 transition-all duration-200">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -809,17 +830,11 @@
                     </div>
                     
                     <div class="flex items-center justify-end text-xs text-gray-500 dark:text-gray-400 mobile-spacing">
-                        <div class="flex items-center space-x-2 lg:space-x-4 flex-wrap">
-                            <span class="hidden sm:inline">Press Enter to send</span>
-                            <span class="hidden sm:inline">•</span>
-                            <span class="hidden sm:inline">Shift+Enter for new line</span>
-                            <span class="hidden sm:inline">•</span>
-                            <div class="flex items-center space-x-1 lg:space-x-2">
-                                <svg class="w-3 h-3 lg:w-4 lg:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                </svg>
-                                <span class="text-xs">Secure</span>
-                            </div>
+                        <div class="flex items-center space-x-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            <span class="text-xs">Secure</span>
                         </div>
                     </div>
                 </form>
