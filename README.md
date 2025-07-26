@@ -8,7 +8,7 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 - 🛡️ **Access Control** - Restrict access by email addresses or domains
 - 🤖 **AI Chat Interface** - Powered by LiteLLM API with multiple model support
 - 📁 **Advanced File Upload Support** - Upload and analyze PDF, DOCX, Excel, images, and text files
-- 🖼️ **AI Image Generation** - Generate images using DALL-E and other image models
+- 🖼️ **AI Image Generation** - Generate images using DALL-E and other image models *(Work in Progress)*
 - 🌙 **Dark Mode** - Toggle between light and dark themes
 - 💾 **Session Management** - Persistent chat sessions with chat history sidebar
 - 📱 **Responsive Design** - Works on desktop and mobile devices
@@ -18,6 +18,38 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 - 🚀 **Performance Optimized** - Response caching and model parameter tuning
 - 📋 **Chat History** - Left sidebar with session management
 - 🎯 **Custom Model Selection** - ChatGPT-style dropdown for model selection
+
+## 📁 Supported File Extensions
+
+The application supports a wide range of file formats for analysis and processing:
+
+### 📄 **Document Files**
+- **PDF** (`.pdf`) - Extract and analyze text content from PDF documents
+- **Word Documents** (`.docx`) - Process Microsoft Word documents
+- **Excel Spreadsheets** (`.xlsx`, `.xls`) - Analyze Excel data and tables
+- **Text Files** (`.txt`, `.md`, `.log`) - Process plain text and markdown files
+- **Data Files** (`.json`, `.yaml`, `.yml`, `.csv`) - Analyze structured data
+
+### 🖼️ **Image Files**
+- **JPEG** (`.jpg`, `.jpeg`) - Extract image metadata and analyze content
+- **PNG** (`.png`) - Process PNG images with metadata extraction
+- **GIF** (`.gif`) - Handle animated GIF files
+- **BMP** (`.bmp`) - Process bitmap images
+- **WebP** (`.webp`) - Support for modern web image format
+
+### 🔧 **File Processing Features**
+- **Text Extraction** - Extract readable text from documents
+- **Metadata Analysis** - Get file information and properties
+- **Content Truncation** - Large files are automatically truncated to 4000 characters
+- **Error Handling** - Graceful handling of unsupported or corrupted files
+- **Base64 Encoding** - Secure file transmission to backend
+
+### 📊 **Analysis Capabilities**
+- **Document Analysis** - Extract key information from PDFs and Word docs
+- **Data Analysis** - Process Excel spreadsheets and CSV files
+- **Code Review** - Analyze JSON, YAML, and other structured data
+- **Image Analysis** - Extract metadata and properties from images
+- **Log Analysis** - Process and analyze log files
 
 ## 🚀 Quick Start
 
@@ -145,10 +177,41 @@ ALLOWED_DOMAIN=
 
 - **Default Model**: The application automatically selects GPT-4o as the default model when available
 - **File Upload**: Supports PDF, DOCX, Excel, images, and text files up to 4000 characters (truncated if larger)
-- **Image Generation**: Supports DALL-E and other image generation models
+- **Image Generation**: Supports DALL-E and other image generation models *(Work in Progress)*
 - **Session Storage**: Chat sessions are stored in memory (replace with database for production)
 - **Response Caching**: In-memory cache for faster repeated queries
 - **Model Optimization**: Optimized parameters for faster AI responses
+
+## 🚧 Work in Progress (WIP)
+
+### 🖼️ **Image Generation Feature**
+The image generation feature is currently in development and may have limitations:
+
+#### ✅ **What's Working:**
+- **Image Generation Button**: Purple toggle button in the chat interface
+- **DALL-E Integration**: Support for DALL-E models via LiteLLM API
+- **Prompt Enhancement**: Automatic enhancement of user prompts for better image generation
+- **Error Handling**: Graceful fallback when image generation fails
+- **UI Integration**: Image mode toggle with visual indicators
+
+#### 🔧 **Current Limitations:**
+- **API Compatibility**: Some LiteLLM endpoints may not support image generation
+- **Model Availability**: DALL-E models may not be available in all LiteLLM deployments
+- **Error Handling**: 400 Bad Request errors may occur with certain API configurations
+- **Fallback Behavior**: Falls back to text generation when image generation fails
+
+#### 🚀 **Planned Improvements:**
+- **Better Error Messages**: More specific error handling for different failure scenarios
+- **Model Detection**: Automatic detection of available image generation models
+- **Alternative Endpoints**: Support for different image generation API endpoints
+- **Image Quality Options**: Configurable image size and quality settings
+- **Batch Generation**: Support for generating multiple images at once
+
+#### 💡 **Usage Tips:**
+- **For Best Results**: Use clear, descriptive prompts for image generation
+- **Model Selection**: Try different models if image generation fails
+- **File Uploads**: Image generation works best without file uploads
+- **Error Recovery**: If image generation fails, try regular chat mode instead
 
 ## 🏗️ Architecture
 
@@ -156,7 +219,7 @@ ALLOWED_DOMAIN=
 - **Authentication**: Google OAuth2 with session management and access control
 - **API Integration**: LiteLLM API for AI model access and image generation
 - **File Handling**: Multi-format file processing (PDF, DOCX, Excel, images, text)
-- **Image Generation**: DALL-E and other image model integration
+- **Image Generation**: DALL-E and other image model integration *(Work in Progress)*
 - **Session Management**: In-memory storage with UUID-based sessions
 - **Response Caching**: In-memory cache for improved performance
 
@@ -165,7 +228,7 @@ ALLOWED_DOMAIN=
 - **Theme Support**: Dark/light mode toggle
 - **Markdown Rendering**: Custom markdown parser for AI responses with image support
 - **File Upload**: Multi-format drag-and-drop and click-to-upload support
-- **Image Generation**: Toggle button for image generation mode
+- **Image Generation**: Toggle button for image generation mode *(Work in Progress)*
 - **Chat History**: Left sidebar with session management
 - **Sticky Layout**: Fixed sidebar and header with scrollable chat area
 
