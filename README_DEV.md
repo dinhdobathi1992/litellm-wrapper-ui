@@ -44,10 +44,10 @@ A demo version of Zen's LiteLLM Chat Application with usage restrictions for non
 
 4. **Set up developer environment variables**
    ```bash
-   cp env.dev.example .env
+   cp env.dev.example .env.dev
    ```
    
-   Edit `.env` file with your credentials:
+   Edit `.env.dev` file with your credentials:
    ```env
    # LiteLLM API Configuration
    LITELLM_API_KEY=your_api_key_here
@@ -83,7 +83,7 @@ A demo version of Zen's LiteLLM Chat Application with usage restrictions for non
      - `http://localhost:8000/auth/callback` (for development)
 
 2. **Update Environment Variables**
-   - Copy the Client ID and Client Secret to your `.env` file
+   - Copy the Client ID and Client Secret to your `.env.dev` file
    - Generate a secure SECRET_KEY (you can use `python -c "import secrets; print(secrets.token_urlsafe(32))"`)
 
 ### Running the Developer Demo
@@ -180,7 +180,7 @@ The application tracks:
 ### Environment Variables for Production Demo
 
 ```env
-# Production demo settings
+# Production demo settings (in .env.dev)
 GOOGLE_REDIRECT_URI=https://your-demo-domain.vercel.app/auth/callback
 DEMO_REQUEST_LIMIT=3
 DEMO_TOKEN_LIMIT=150
@@ -232,11 +232,13 @@ litellm-wrapper-ui/
 ├── main_dev.py           # Developer version of main application
 ├── auth_dev.py           # Developer authentication with usage tracking
 ├── env.dev.example       # Developer environment template
+├── .env.dev              # Developer environment variables (create from env.dev.example)
 ├── start_dev.sh          # Developer startup script (bash)
 ├── start_dev.fish        # Developer startup script (fish)
 ├── README_DEV.md         # This file
 ├── main.py              # Production version
 ├── auth.py              # Production authentication
+├── .env                  # Production environment variables
 ├── requirements.txt     # Python dependencies
 ├── templates/           # HTML templates
 │   ├── chat.html       # Main chat interface

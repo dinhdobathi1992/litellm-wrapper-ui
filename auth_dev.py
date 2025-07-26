@@ -6,7 +6,7 @@ from fastapi import HTTPException, Request
 from starlette.responses import RedirectResponse
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('.env.dev')
 
 # Session management
 SECRET_KEY = os.getenv('SECRET_KEY', secrets.token_urlsafe(32))

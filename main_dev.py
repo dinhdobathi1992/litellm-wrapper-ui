@@ -28,7 +28,7 @@ try:
 except ImportError:
     IMAGE_AVAILABLE = False
 
-load_dotenv()
+load_dotenv('.env.dev')
 
 app = FastAPI(title="Zen's LiteLLM Chat App - Developer Demo")
 
