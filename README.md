@@ -1,19 +1,20 @@
 # Zen's LiteLLM Chat Application
 
-A modern, lightweight web chat application built with FastAPI and TailwindCSS that integrates with LiteLLM API for AI-powered conversations. Features Google OAuth2 authentication with email/domain access control for secure user management.
+A modern, lightweight web chat application built with FastAPI and TailwindCSS that integrates with LiteLLM API for AI-powered conversations. Features Google OAuth2 authentication with email/domain access control, PDF processing, and AI image generation capabilities.
 
 ## ✨ Features
 
 - 🔐 **Google OAuth2 Authentication** - Secure login with Google accounts
 - 🛡️ **Access Control** - Restrict access by email addresses or domains
 - 🤖 **AI Chat Interface** - Powered by LiteLLM API with multiple model support
-- 📁 **File Upload Support** - Upload and analyze files in conversations
+- 📁 **Advanced File Upload Support** - Upload and analyze PDF, DOCX, Excel, images, and text files
+- 🖼️ **AI Image Generation** - Generate images using DALL-E and other image models
 - 🌙 **Dark Mode** - Toggle between light and dark themes
 - 💾 **Session Management** - Persistent chat sessions with chat history sidebar
 - 📱 **Responsive Design** - Works on desktop and mobile devices
 - 🎨 **Modern UI** - Professional ChatGPT-like interface with sticky layout
 - 🔄 **Real-time Chat** - Instant message sending and receiving
-- 📊 **Markdown Rendering** - Rich formatting for AI responses
+- 📊 **Markdown Rendering** - Rich formatting for AI responses with image support
 - 🚀 **Performance Optimized** - Response caching and model parameter tuning
 - 📋 **Chat History** - Left sidebar with session management
 - 🎯 **Custom Model Selection** - ChatGPT-style dropdown for model selection
@@ -56,7 +57,7 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
    LITELLM_API_BASE=https://litellm.shared-services.adb.adi.tech
    
    # Application Configuration
-   APP_VERSION=1.3.0
+   APP_VERSION=2.0.0
    
    # Google OAuth2 Configuration
    GOOGLE_CLIENT_ID=your_google_client_id_here
@@ -107,7 +108,7 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 |----------|-------------|----------|---------|
 | `LITELLM_API_KEY` | Your LiteLLM API key | Yes | - |
 | `LITELLM_API_BASE` | LiteLLM API base URL | No | `https://litellm.shared-services.adb.adi.tech` |
-| `APP_VERSION` | Application version | No | `1.3.0` |
+| `APP_VERSION` | Application version | No | `2.0.0` |
 | `GOOGLE_CLIENT_ID` | Google OAuth2 Client ID | Yes | - |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth2 Client Secret | Yes | - |
 | `SECRET_KEY` | Session encryption key | Yes | Auto-generated |
@@ -143,7 +144,8 @@ ALLOWED_DOMAIN=
 ### Features Configuration
 
 - **Default Model**: The application automatically selects GPT-4o as the default model when available
-- **File Upload**: Supports text files up to 4000 characters (truncated if larger)
+- **File Upload**: Supports PDF, DOCX, Excel, images, and text files up to 4000 characters (truncated if larger)
+- **Image Generation**: Supports DALL-E and other image generation models
 - **Session Storage**: Chat sessions are stored in memory (replace with database for production)
 - **Response Caching**: In-memory cache for faster repeated queries
 - **Model Optimization**: Optimized parameters for faster AI responses
@@ -152,16 +154,18 @@ ALLOWED_DOMAIN=
 
 ### Backend (FastAPI)
 - **Authentication**: Google OAuth2 with session management and access control
-- **API Integration**: LiteLLM API for AI model access
-- **File Handling**: Base64 encoding for file uploads
+- **API Integration**: LiteLLM API for AI model access and image generation
+- **File Handling**: Multi-format file processing (PDF, DOCX, Excel, images, text)
+- **Image Generation**: DALL-E and other image model integration
 - **Session Management**: In-memory storage with UUID-based sessions
 - **Response Caching**: In-memory cache for improved performance
 
 ### Frontend (HTML/JavaScript)
 - **UI Framework**: TailwindCSS for styling
 - **Theme Support**: Dark/light mode toggle
-- **Markdown Rendering**: Custom markdown parser for AI responses
-- **File Upload**: Drag-and-drop and click-to-upload support
+- **Markdown Rendering**: Custom markdown parser for AI responses with image support
+- **File Upload**: Multi-format drag-and-drop and click-to-upload support
+- **Image Generation**: Toggle button for image generation mode
 - **Chat History**: Left sidebar with session management
 - **Sticky Layout**: Fixed sidebar and header with scrollable chat area
 
@@ -253,6 +257,7 @@ This project is licensed under the MIT License.
 
 ## 🔄 Version History
 
+- **v2.0.0** - Added PDF support, image generation, multi-format file processing, DALL-E integration
 - **v1.3.0** - Added email/domain access control, sticky layout, chat history sidebar, performance optimizations
 - **v1.2.0** - Added Google OAuth2 authentication, enhanced UI
 - **v1.1.0** - Enhanced UI, file upload, session management
@@ -269,4 +274,4 @@ If you encounter any issues:
 
 ---
 
-**Powered by LiteLLM • v1.3.0** 
+**Powered by LiteLLM • v2.0.0** 
