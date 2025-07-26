@@ -130,10 +130,11 @@ Image Analysis:
 
 def is_image_generation_model(model: str) -> bool:
     """Check if the model supports image generation"""
+    # Only true image generation models
     image_models = [
         'dall-e-3', 'dall-e-2', 'dall-e',
         'midjourney', 'stable-diffusion',
-        'gpt-4o-mini', 'gpt-4o', 'gpt-4'
+        'sdxl', 'kandinsky', 'deepfloyd'
     ]
     return any(img_model in model.lower() for img_model in image_models)
 
@@ -353,8 +354,18 @@ async def chat_completion(
     chat_sessions[session_id].append(user_message)
     
     # Check if this is an image generation request
-    if is_image_request or is_image_generation_model(model):
+    # Use image generation only if:
+    # 1. User explicitly clicked the image button, OR
+    # 2. Using a dedicated image model AND no file is uploaded
+    should_generate_image = is_image_request or (is_image_generation_model(model) and not file_content)
+    
+    print(f"🔍 Debug: is_image_request={is_image_request}, model={model}, is_image_model={is_image_generation_model(model)}, has_file={bool(file_content)}, should_generate_image={should_generate_image}")
+    
+    if should_generate_image:
+        print(f"🔍 Debug: Using image generation mode")
         return await handle_image_generation(request, message, model, session_id, file_content, file_name)
+    else:
+        print(f"🔍 Debug: Using regular chat completion mode")
     
     # Prepare the message for LiteLLM
     user_content = message
