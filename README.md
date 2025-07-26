@@ -11,7 +11,7 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 - 🖼️ **AI Image Generation** - Generate images using DALL-E and other image models *(Work in Progress)*
 - 🌙 **Dark Mode** - Toggle between light and dark themes
 - 💾 **Session Management** - Persistent chat sessions with chat history sidebar
-- 📱 **Responsive Design** - Works on desktop and mobile devices
+- 📱 **Responsive Design** - Works on desktop devices *(Mobile support in development)*
 - 🎨 **Modern UI** - Professional ChatGPT-like interface with sticky layout
 - 🔄 **Real-time Chat** - Instant message sending and receiving
 - 📊 **Markdown Rendering** - Rich formatting for AI responses with image support
@@ -181,6 +181,7 @@ ALLOWED_DOMAIN=
 - **Session Storage**: Chat sessions are stored in memory (replace with database for production)
 - **Response Caching**: In-memory cache for faster repeated queries
 - **Model Optimization**: Optimized parameters for faster AI responses
+- **Mobile Optimization**: Basic responsive design, mobile-specific improvements in development
 
 ## 🚧 Work in Progress (WIP)
 
@@ -213,6 +214,47 @@ The image generation feature is currently in development and may have limitation
 - **File Uploads**: Image generation works best without file uploads
 - **Error Recovery**: If image generation fails, try regular chat mode instead
 
+### 📱 **Mobile UI Support**
+The mobile user interface is currently in development and has limitations:
+
+#### ✅ **What's Working:**
+- **Basic Responsiveness**: The application adapts to different screen sizes
+- **Touch-Friendly Elements**: Buttons and inputs are sized for touch interaction
+- **Dark Mode**: Mobile dark mode support is functional
+- **Core Functionality**: Chat, file upload, and authentication work on mobile browsers
+
+#### 🔧 **Current Limitations:**
+- **Sidebar Layout**: The left sidebar with chat history may not display optimally on small screens
+- **File Upload**: File selection and preview may be limited on mobile devices
+- **Image Generation**: The image generation button layout may need mobile-specific adjustments
+- **Model Selection**: The dropdown menu may not be fully optimized for touch interaction
+- **Text Input**: The message input area may need mobile-specific improvements
+- **Scrolling**: Chat history scrolling may not be smooth on all mobile devices
+
+#### 🚀 **Planned Mobile Improvements:**
+- **Mobile-First Design**: Redesign the layout specifically for mobile devices
+- **Collapsible Sidebar**: Implement a hamburger menu for the chat history sidebar
+- **Touch Gestures**: Add swipe gestures for navigation and chat management
+- **Mobile File Upload**: Optimize file selection and preview for mobile devices
+- **Responsive Typography**: Adjust font sizes and spacing for mobile screens
+- **Mobile Keyboard**: Optimize for mobile keyboard interactions
+- **Progressive Web App (PWA)**: Add PWA capabilities for app-like experience
+- **Offline Support**: Basic offline functionality for mobile users
+
+#### 📱 **Mobile Browser Compatibility:**
+- **iOS Safari**: ✅ Basic support, some UI limitations
+- **Android Chrome**: ✅ Basic support, some UI limitations
+- **Firefox Mobile**: ✅ Basic support, some UI limitations
+- **Samsung Internet**: ⚠️ Limited testing, may have issues
+- **Other Mobile Browsers**: ⚠️ Not fully tested
+
+#### 💡 **Mobile Usage Tips:**
+- **Landscape Mode**: Use landscape orientation for better viewing experience
+- **Desktop Mode**: For full functionality, consider using desktop mode in mobile browser
+- **File Uploads**: Use smaller files for better mobile performance
+- **Chat History**: The sidebar may be hidden on very small screens
+- **Touch Interaction**: Tap and hold may be required for some interactions
+
 ## 🏗️ Architecture
 
 ### Backend (FastAPI)
@@ -231,6 +273,7 @@ The image generation feature is currently in development and may have limitation
 - **Image Generation**: Toggle button for image generation mode *(Work in Progress)*
 - **Chat History**: Left sidebar with session management
 - **Sticky Layout**: Fixed sidebar and header with scrollable chat area
+- **Mobile Support**: Basic responsive design *(Mobile optimization in development)*
 
 ## 🔒 Security Features
 
