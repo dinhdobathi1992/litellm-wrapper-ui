@@ -1,18 +1,22 @@
-# LiteLLM Chat Application
+# Zen's LiteLLM Chat Application
 
-A modern, lightweight web chat application built with FastAPI and TailwindCSS that integrates with LiteLLM API for AI-powered conversations. Features Google OAuth2 authentication for secure user access.
+A modern, lightweight web chat application built with FastAPI and TailwindCSS that integrates with LiteLLM API for AI-powered conversations. Features Google OAuth2 authentication with email/domain access control for secure user management.
 
 ## ✨ Features
 
 - 🔐 **Google OAuth2 Authentication** - Secure login with Google accounts
+- 🛡️ **Access Control** - Restrict access by email addresses or domains
 - 🤖 **AI Chat Interface** - Powered by LiteLLM API with multiple model support
 - 📁 **File Upload Support** - Upload and analyze files in conversations
 - 🌙 **Dark Mode** - Toggle between light and dark themes
-- 💾 **Session Management** - Persistent chat sessions during browser session
+- 💾 **Session Management** - Persistent chat sessions with chat history sidebar
 - 📱 **Responsive Design** - Works on desktop and mobile devices
-- 🎨 **Modern UI** - Professional ChatGPT-like interface
+- 🎨 **Modern UI** - Professional ChatGPT-like interface with sticky layout
 - 🔄 **Real-time Chat** - Instant message sending and receiving
 - 📊 **Markdown Rendering** - Rich formatting for AI responses
+- 🚀 **Performance Optimized** - Response caching and model parameter tuning
+- 📋 **Chat History** - Left sidebar with session management
+- 🎯 **Custom Model Selection** - ChatGPT-style dropdown for model selection
 
 ## 🚀 Quick Start
 
@@ -25,7 +29,7 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/dinhdobathi1992/litellm-wrapper-ui.git
    cd litellm-wrapper-ui
    ```
 
@@ -52,12 +56,18 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
    LITELLM_API_BASE=https://litellm.shared-services.adb.adi.tech
    
    # Application Configuration
-   APP_VERSION=1.2.0
+   APP_VERSION=1.3.0
    
    # Google OAuth2 Configuration
    GOOGLE_CLIENT_ID=your_google_client_id_here
    GOOGLE_CLIENT_SECRET=your_google_client_secret_here
    SECRET_KEY=your_secret_key_here_change_this_in_production
+   
+   # Access Control Configuration
+   # Comma-separated list of allowed email addresses (leave empty to allow all)
+   ALLOWED_EMAILS=user1@gmail.com,user2@company.com
+   # Allowed domain (leave empty to allow all domains)
+   ALLOWED_DOMAIN=yourcompany.com
    ```
 
 ### Google OAuth2 Setup
@@ -97,34 +107,68 @@ A modern, lightweight web chat application built with FastAPI and TailwindCSS th
 |----------|-------------|----------|---------|
 | `LITELLM_API_KEY` | Your LiteLLM API key | Yes | - |
 | `LITELLM_API_BASE` | LiteLLM API base URL | No | `https://litellm.shared-services.adb.adi.tech` |
-| `APP_VERSION` | Application version | No | `1.0.0` |
+| `APP_VERSION` | Application version | No | `1.3.0` |
 | `GOOGLE_CLIENT_ID` | Google OAuth2 Client ID | Yes | - |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth2 Client Secret | Yes | - |
 | `SECRET_KEY` | Session encryption key | Yes | Auto-generated |
+| `ALLOWED_EMAILS` | Comma-separated allowed emails | No | Allow all |
+| `ALLOWED_DOMAIN` | Allowed email domain | No | Allow all |
+
+### Access Control Configuration
+
+**Option 1: Restrict by Specific Emails**
+```env
+ALLOWED_EMAILS=user1@gmail.com,user2@company.com,admin@yourdomain.com
+ALLOWED_DOMAIN=
+```
+
+**Option 2: Restrict by Domain**
+```env
+ALLOWED_EMAILS=
+ALLOWED_DOMAIN=yourcompany.com
+```
+
+**Option 3: Both (must match either)**
+```env
+ALLOWED_EMAILS=admin@gmail.com,ceo@company.com
+ALLOWED_DOMAIN=yourcompany.com
+```
+
+**Option 4: Allow All (default)**
+```env
+ALLOWED_EMAILS=
+ALLOWED_DOMAIN=
+```
 
 ### Features Configuration
 
 - **Default Model**: The application automatically selects GPT-4o as the default model when available
 - **File Upload**: Supports text files up to 4000 characters (truncated if larger)
 - **Session Storage**: Chat sessions are stored in memory (replace with database for production)
+- **Response Caching**: In-memory cache for faster repeated queries
+- **Model Optimization**: Optimized parameters for faster AI responses
 
 ## 🏗️ Architecture
 
 ### Backend (FastAPI)
-- **Authentication**: Google OAuth2 with session management
+- **Authentication**: Google OAuth2 with session management and access control
 - **API Integration**: LiteLLM API for AI model access
 - **File Handling**: Base64 encoding for file uploads
 - **Session Management**: In-memory storage with UUID-based sessions
+- **Response Caching**: In-memory cache for improved performance
 
 ### Frontend (HTML/JavaScript)
 - **UI Framework**: TailwindCSS for styling
 - **Theme Support**: Dark/light mode toggle
 - **Markdown Rendering**: Custom markdown parser for AI responses
 - **File Upload**: Drag-and-drop and click-to-upload support
+- **Chat History**: Left sidebar with session management
+- **Sticky Layout**: Fixed sidebar and header with scrollable chat area
 
 ## 🔒 Security Features
 
 - **OAuth2 Authentication**: Secure Google login
+- **Access Control**: Email and domain-based restrictions
 - **Session Management**: Encrypted session storage
 - **State Parameter**: CSRF protection for OAuth flow
 - **Input Validation**: Server-side validation for all inputs
@@ -169,14 +213,16 @@ Make sure to update your Google OAuth2 redirect URIs to include your production 
 ```
 litellm-wrapper-ui/
 ├── main.py              # FastAPI application
-├── auth.py              # Authentication module
+├── auth.py              # Authentication module with access control
 ├── requirements.txt     # Python dependencies
 ├── .env                 # Environment variables
 ├── env.example          # Environment template
 ├── templates/           # HTML templates
 │   ├── chat.html       # Main chat interface
 │   └── login.html      # Login page
-├── v1.1.0/             # Backup of previous version
+├── v1.0.0/             # Backup of v1.0.0
+├── v1.1.0/             # Backup of v1.1.0
+├── v1.2.0/             # Backup of v1.2.0
 └── README.md           # This file
 ```
 
@@ -207,7 +253,8 @@ This project is licensed under the MIT License.
 
 ## 🔄 Version History
 
-- **v1.2.0** - Added Google OAuth2 authentication
+- **v1.3.0** - Added email/domain access control, sticky layout, chat history sidebar, performance optimizations
+- **v1.2.0** - Added Google OAuth2 authentication, enhanced UI
 - **v1.1.0** - Enhanced UI, file upload, session management
 - **v1.0.0** - Initial release with basic chat functionality
 
@@ -218,7 +265,8 @@ If you encounter any issues:
 2. Verify Google OAuth2 credentials are valid
 3. Ensure LiteLLM API is accessible
 4. Check the server logs for detailed error messages
+5. Verify access control settings if users can't log in
 
 ---
 
-**Powered by LiteLLM • v1.2.0** 
+**Powered by LiteLLM • v1.3.0** 
