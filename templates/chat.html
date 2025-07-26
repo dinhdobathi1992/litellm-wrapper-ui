@@ -856,6 +856,10 @@
                 <form id="chatForm" class="space-y-4">
                     <input type="hidden" id="sessionId" name="session_id" value="">
                     <input type="hidden" id="selectedModel" name="model" value="">
+                    <input type="hidden" id="fileName" name="file_name" value="">
+                    <input type="hidden" id="fileContent" name="file_content" value="">
+                    <input type="hidden" id="isImageRequest" name="is_image_request" value="false">
+                    <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx,.xlsx,.xls,.txt,.json,.yaml,.yml,.csv,.md,.log,.jpg,.jpeg,.png,.gif,.bmp,.webp">
                     
                     <div class="relative">
                         <!-- File name preview -->
@@ -1203,14 +1207,6 @@
             }
         }
 
-        // Handle model selection change
-        document.getElementById('modelSelect').addEventListener('change', function() {
-            const selectedValue = this.value;
-            const selectedText = this.options[this.selectedIndex].text;
-            document.getElementById('selectedModel').value = selectedValue;
-            document.getElementById('selectedModelText').textContent = selectedText;
-        });
-
         // ChatGPT-style model selector - REMOVED (conflicts with custom dropdown)
 
         // Handle form submission
@@ -1462,9 +1458,22 @@
             selectedModelText = document.getElementById('selectedModelText');
             
             if (!modelSelectButton || !modelDropdown || !modelSelect || !selectedModelText) {
-                console.error('Model dropdown elements not found');
+                console.error('Model dropdown elements not found:', {
+                    modelSelectButton: !!modelSelectButton,
+                    modelDropdown: !!modelDropdown,
+                    modelSelect: !!modelSelect,
+                    selectedModelText: !!selectedModelText
+                });
                 return;
             }
+            
+            // Add change handler for model select
+            modelSelect.addEventListener('change', function() {
+                const selectedValue = this.value;
+                const selectedText = this.options[this.selectedIndex].text;
+                document.getElementById('selectedModel').value = selectedValue;
+                selectedModelText.textContent = selectedText;
+            });
             
             function closeModelDropdown() {
                 modelDropdown.classList.add('hidden');
