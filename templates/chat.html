@@ -507,6 +507,24 @@
             .mobile-input-container {
                 padding: 0.5rem;
             }
+            
+            /* Mobile status indicators */
+            .mobile-status-indicators {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .mobile-status-indicators .w-2 {
+                width: 0.375rem;
+                height: 0.375rem;
+            }
+            
+            .mobile-status-indicators .w-4 {
+                width: 0.875rem;
+                height: 0.875rem;
+            }
         }
         
         /* Tablet optimizations */
@@ -725,16 +743,16 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 desktop-only">
+                    <div class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mobile-status-indicators">
                         <div class="flex items-center space-x-1">
                             <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                            <span>Connected</span>
+                            <span class="hidden sm:inline">Connected</span>
                         </div>
                         <div class="flex items-center space-x-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                            <span>Secure</span>
+                            <span class="hidden sm:inline">Secure</span>
                         </div>
                     </div>
                 </div>
