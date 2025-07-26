@@ -1,0 +1,11 @@
+Backup completed at Sat Jul 26 15:16:22 +07 2025
+Version: v1.1.0
+Features:
+- GPT-4o as default model
+- Fixed dark mode textarea styling
+- Custom scrollbar for dark mode
+- Enhanced system prompt for better responses
+- Markdown rendering in chat
+- File upload functionality
+- Session management
+- Professional UI with dark mode
