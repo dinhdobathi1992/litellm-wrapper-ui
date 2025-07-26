@@ -41,7 +41,7 @@ templates = Jinja2Templates(directory="templates")
 # Configuration
 LITELLM_API_BASE = os.getenv("LITELLM_API_BASE", "https://litellm.shared-services.adb.adi.tech")
 API_KEY = os.getenv("LITELLM_API_KEY")
-VERSION = os.getenv("APP_VERSION", "2.0.0")
+VERSION = os.getenv("APP_VERSION", "3.0.0")
 
 print("🚀 Zen's LiteLLM Chat App starting...")
 print(f"📦 Version: {VERSION}")
