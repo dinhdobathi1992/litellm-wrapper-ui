@@ -226,78 +226,245 @@
 
         /* Mobile-first responsive design */
         @media (max-width: 768px) {
+            /* Prevent horizontal scroll */
+            body {
+                overflow-x: hidden;
+                width: 100%;
+            }
+            
             /* Main layout adjustments */
             .min-h-screen {
                 flex-direction: column;
+                min-height: 100vh;
+                height: 100vh;
             }
             
-            /* Sidebar becomes collapsible on mobile */
-            .w-80 {
+            /* Mobile container */
+            .mobile-container {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
                 width: 100%;
-                height: auto;
-                max-height: 300px;
-                position: relative;
             }
             
-            /* Mobile sidebar header */
-            .sidebar-header {
+            /* Mobile header - fixed at top */
+            .mobile-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 50;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid #e5e7eb;
+                padding: 0.75rem 1rem;
+            }
+            
+            .dark .mobile-header {
+                background: rgba(31, 41, 55, 0.95);
+                border-bottom: 1px solid #374151;
+            }
+            
+            /* Mobile sidebar - collapsible */
+            .mobile-sidebar {
+                width: 100%;
+                max-height: 200px;
+                overflow-y: auto;
+                border-bottom: 1px solid #e5e7eb;
+                background: #f9fafb;
+                margin-top: 60px; /* Account for fixed header */
+            }
+            
+            .dark .mobile-sidebar {
+                background: #1f2937;
+                border-bottom: 1px solid #374151;
+            }
+            
+            /* Mobile chat area */
+            .mobile-chat-area {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1rem 0.75rem;
+                margin-top: 0;
+                margin-bottom: 80px; /* Account for fixed input */
+            }
+            
+            /* Mobile input area - fixed at bottom */
+            .mobile-input-area {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 40;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-top: 1px solid #e5e7eb;
                 padding: 0.75rem;
             }
             
-            /* Mobile chat history */
-            .chat-history-mobile {
-                max-height: 200px;
-                overflow-y: auto;
+            .dark .mobile-input-area {
+                background: rgba(31, 41, 55, 0.95);
+                border-top: 1px solid #374151;
             }
             
             /* Mobile model selector */
-            .model-select-mobile {
+            .mobile-model-select {
                 width: 100%;
                 max-width: none;
-                margin-bottom: 0.5rem;
+                font-size: 0.875rem;
+                padding: 0.5rem 0.75rem;
+                border-radius: 0.5rem;
             }
             
             /* Mobile message input */
-            .message-input-mobile {
+            .mobile-message-input {
                 padding: 0.75rem;
                 font-size: 16px; /* Prevent zoom on iOS */
+                border-radius: 1rem;
+                min-height: 44px; /* Touch-friendly height */
+                max-height: 120px;
+                resize: none;
             }
             
-            /* Mobile buttons */
+            /* Mobile buttons - larger touch targets */
             .mobile-button {
-                width: 2.5rem;
-                height: 2.5rem;
-                font-size: 0.875rem;
-            }
-            
-            /* Mobile chat messages */
-            .chat-messages-mobile {
-                padding: 0.75rem;
-                margin-bottom: 0.5rem;
+                width: 44px;
+                height: 44px;
+                border-radius: 0.75rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                touch-action: manipulation;
             }
             
             /* Mobile message bubbles */
-            .message-bubble-mobile {
-                max-width: 95%;
-                padding: 0.75rem;
+            .mobile-message-bubble {
+                max-width: 90%;
+                padding: 0.75rem 1rem;
                 font-size: 0.875rem;
+                line-height: 1.5;
+                border-radius: 1rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            /* Mobile user message bubble */
+            .mobile-user-bubble {
+                background: #3b82f6;
+                color: white;
+                margin-left: auto;
+                border-bottom-right-radius: 0.25rem;
+            }
+            
+            /* Mobile AI message bubble */
+            .mobile-ai-bubble {
+                background: #f3f4f6;
+                color: #1f2937;
+                margin-right: auto;
+                border-bottom-left-radius: 0.25rem;
+            }
+            
+            .dark .mobile-ai-bubble {
+                background: #374151;
+                color: #f9fafb;
             }
             
             /* Mobile footer */
-            .footer-mobile {
-                padding: 0.75rem;
+            .mobile-footer {
+                padding: 0.5rem 0.75rem;
                 font-size: 0.75rem;
+                text-align: center;
+                background: transparent;
+                border: none;
+                margin-top: auto;
             }
             
             /* Hide desktop elements on mobile */
             .desktop-only {
-                display: none;
+                display: none !important;
             }
             
             /* Mobile-specific spacing */
             .mobile-spacing {
                 margin-bottom: 0.5rem;
             }
+            
+            /* Mobile file preview */
+            .mobile-file-preview {
+                max-width: 100%;
+                word-break: break-all;
+                font-size: 0.75rem;
+            }
+            
+            /* Mobile typing indicator */
+            .mobile-typing-indicator {
+                padding: 0.5rem 1rem;
+                margin: 0.5rem 0;
+            }
+            
+            /* Mobile scrollbar */
+            .mobile-chat-area::-webkit-scrollbar {
+                width: 4px;
+            }
+            
+            .mobile-chat-area::-webkit-scrollbar-thumb {
+                background: #d1d5db;
+                border-radius: 2px;
+            }
+            
+            .dark .mobile-chat-area::-webkit-scrollbar-thumb {
+                background: #4b5563;
+            }
+            
+            /* Mobile safe area support */
+            .mobile-safe-area {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            
+            /* Mobile touch feedback */
+            .mobile-touch-feedback {
+                transition: transform 0.1s ease;
+            }
+            
+            .mobile-touch-feedback:active {
+                transform: scale(0.95);
+            }
+            
+            /* Mobile status bar spacing */
+            .mobile-status-bar {
+                height: env(safe-area-inset-top);
+                background: transparent;
+            }
+            
+            /* Mobile keyboard adjustments */
+            .mobile-keyboard-open {
+                height: calc(100vh - 300px);
+            }
+            
+            /* Mobile landscape adjustments */
+            @media (orientation: landscape) and (max-height: 500px) {
+                .mobile-sidebar {
+                    max-height: 120px;
+                }
+                
+                .mobile-chat-area {
+                    margin-bottom: 60px;
+                }
+            }
+        }
+        
+        /* Tablet optimizations */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .w-80 {
+                width: 280px;
+            }
+            
+            .mobile-message-bubble {
+                max-width: 85%;
+            }
+        }
             
             /* Mobile file preview */
             .file-preview-mobile {
@@ -334,22 +501,6 @@
             }
         }
         
-        /* Touch-friendly interactions */
-        @media (hover: none) and (pointer: coarse) {
-            .mobile-button {
-                min-width: 44px;
-                min-height: 44px;
-            }
-            
-            .model-select-button {
-                min-height: 44px;
-            }
-            
-            .message-input {
-                min-height: 44px;
-            }
-        }
-
         .model-select option {
             background-color: #ffffff;
             color: #374151;
@@ -394,8 +545,6 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
-        
-
         
         .fade-in {
             animation: fadeIn 0.3s ease-in-out;
@@ -452,9 +601,9 @@
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-dark-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
-                <div class="min-h-screen flex flex-col lg:flex-row">
+                <div class="min-h-screen flex flex-col lg:flex-row mobile-container">
                 <!-- Left Sidebar (Sticky) -->
-                <div class="w-full lg:w-80 bg-white dark:bg-dark-800 border-b lg:border-r border-gray-200 dark:border-dark-700 flex flex-col lg:min-h-screen lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden">
+                <div class="w-full lg:w-80 bg-white dark:bg-dark-800 border-b lg:border-r border-gray-200 dark:border-dark-700 flex flex-col lg:min-h-screen lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden mobile-sidebar">
             <!-- Sidebar Header -->
             <div class="p-4 border-b border-gray-200 dark:border-dark-700 sidebar-header">
                 <div class="flex items-center space-x-3">
@@ -526,7 +675,7 @@
                                         <!-- Main Content Area -->
                 <div class="flex-1 flex flex-col bg-white dark:bg-dark-900 min-h-screen w-full">
                     <!-- Header with Model Select (Sticky) -->
-                    <div class="border-b border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-800 shadow-sm sticky top-0 z-10">
+                    <div class="border-b border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-800 shadow-sm sticky top-0 z-10 mobile-header">
                 <div class="flex items-center justify-between px-4 lg:px-6 py-4">
                     <div class="flex items-center space-x-4">
                         <!-- ChatGPT-style Model Select -->
@@ -563,7 +712,7 @@
             
                                                     <!-- Chat Messages (Scrollable) -->
                     <div class="flex-1 overflow-y-auto bg-white dark:bg-dark-900 flex-grow">
-                        <div class="max-w-4xl mx-auto px-4 lg:px-6 py-4 lg:py-6 min-h-full chat-messages-mobile">
+                        <div class="max-w-4xl mx-auto px-4 lg:px-6 py-4 lg:py-6 min-h-full chat-messages-mobile mobile-chat-area">
                     <div id="chatMessages" class="chat-container space-y-6 mb-6">
                 <!-- Welcome message -->
                 <div class="flex justify-center fade-in">
@@ -600,7 +749,7 @@
         </div>
         
                             <!-- Message Input (Sticky Bottom) -->
-                    <div class="border-t border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-900 shadow-sm sticky bottom-0 z-10">
+                    <div class="border-t border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-900 shadow-sm sticky bottom-0 z-10 mobile-input-area">
             <div class="max-w-4xl mx-auto px-4 lg:px-6 py-4">
                 <div class="glass-effect border border-gray-200 dark:border-dark-700 rounded-2xl p-6 shadow-sm">
                 <form id="chatForm" class="space-y-4">
@@ -614,7 +763,7 @@
                             id="messageInput" 
                             name="message"
                             rows="1"
-                            class="message-input message-input-mobile w-full px-4 py-3 border border-gray-300 dark:border-dark-600 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-dark-800"
+                            class="message-input mobile-message-input w-full px-4 py-3 border border-gray-300 dark:border-dark-600 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-dark-800"
                             placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
                             required
                         ></textarea>
@@ -1230,7 +1379,7 @@
             messageDiv.innerHTML = `
                 <div class="flex items-start space-x-2 lg:space-x-3 max-w-4xl">
                     ${!isUser ? `<div class="w-6 h-6 lg:w-8 lg:h-8 bg-gray-100 dark:bg-dark-700 rounded-full flex items-center justify-center flex-shrink-0">${icon}</div>` : ''}
-                    <div class="message-bubble message-bubble-mobile ${bgColor} rounded-2xl px-4 lg:px-6 py-3 lg:py-4 shadow-sm ${textColor}">
+                    <div class="message-bubble mobile-message-bubble ${isUser ? 'mobile-user-bubble' : 'mobile-ai-bubble'} ${bgColor} rounded-2xl px-4 lg:px-6 py-3 lg:py-4 shadow-sm ${textColor}">
                         <div class="text-xs lg:text-sm font-medium mb-2 ${isUser ? 'text-blue-100' : 'text-gray-700 dark:text-gray-300'}">${isUser ? 'You' : 'AI Assistant'}</div>
                         <div class="whitespace-pre-wrap leading-relaxed markdown-content text-sm lg:text-base">${renderMarkdown(content)}</div>
                         ${fileHtml}
