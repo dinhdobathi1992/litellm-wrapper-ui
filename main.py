@@ -39,7 +39,7 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 templates = Jinja2Templates(directory="templates")
 
 # Configuration
-LITELLM_API_BASE = os.getenv("LITELLM_API_BASE", "https://litellm.shared-services.adb.adi.tech")
+LITELLM_API_BASE = os.getenv("LITELLM_API_BASE", "https://your-litellm-proxy.com")
 API_KEY = os.getenv("LITELLM_API_KEY")
 VERSION = os.getenv("APP_VERSION", "3.0.0")
 

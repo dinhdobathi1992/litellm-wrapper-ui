@@ -92,7 +92,7 @@ The application supports a wide range of file formats for analysis and processin
    ```env
    # LiteLLM API Configuration
    LITELLM_API_KEY=your_api_key_here
-   LITELLM_API_BASE=https://litellm.shared-services.adb.adi.tech
+   LITELLM_API_BASE=https://your-litellm-proxy.com
    
    # Application Configuration
    APP_VERSION=2.0.0
