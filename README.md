@@ -202,7 +202,7 @@ This project is licensed under the MIT License.
 ## 👨‍💻 Author
 
 **ThiThi**
-- GitHub: [dinhdobathi1992](https://github.com/dinhdobathi1992)
+- GitHub: [dinhdobathi1992](https://github.com/dinhdobathi1992/litellm-wrapper-ui)
 - Portfolio: [dinhdobathi.com](https://dinhdobathi.com)
 
 ## 🔄 Version History

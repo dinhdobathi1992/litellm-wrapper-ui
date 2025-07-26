@@ -14,10 +14,29 @@ SECRET_KEY = os.getenv('SECRET_KEY', secrets.token_urlsafe(32))
 # Google OAuth configuration
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
-GOOGLE_REDIRECT_URI = 'http://localhost:8000/auth/callback'
+GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI')
+
+# Access control configuration
+ALLOWED_EMAILS = os.getenv('ALLOWED_EMAILS', '').split(',') if os.getenv('ALLOWED_EMAILS') else []
+ALLOWED_DOMAIN = os.getenv('ALLOWED_DOMAIN', '')
 
 # In-memory user storage (replace with database in production)
 users = {}
+
+def check_access_permission(email: str) -> tuple[bool, str]:
+    """
+    Check if user has access permission based on email and domain restrictions.
+    Returns (is_allowed, error_message)
+    """
+    # Check if email is in allowed list
+    if ALLOWED_EMAILS and email not in ALLOWED_EMAILS:
+        return False, f"Email {email} is not in the allowed list."
+    
+    # Check if email domain is allowed
+    if ALLOWED_DOMAIN and not email.endswith(f"@{ALLOWED_DOMAIN}"):
+        return False, f"Email domain is not authorized. Only {ALLOWED_DOMAIN} emails are allowed."
+    
+    return True, ""
 
 def get_current_user(request: Request) -> Optional[dict]:
     """Get current user from session"""
@@ -87,6 +106,14 @@ async def auth_callback(request: Request):
             user_response.raise_for_status()
             user_info = user_response.json()
             
+            # Check access permissions
+            user_email = user_info.get('email', '')
+            is_allowed, error_message = check_access_permission(user_email)
+            
+            if not is_allowed:
+                print(f"🔒 Access denied for {user_email}: {error_message}")
+                return RedirectResponse(url=f'/login?error=access_denied&message={error_message}', status_code=302)
+            
             # Store user in session
             user = {
                 'id': user_info['id'],
@@ -101,6 +128,7 @@ async def auth_callback(request: Request):
             print(f"  - Email: {user['email']}")
             print(f"  - Name: {user['name']}")
             print(f"  - Picture: {user['picture']}")
+            print(f"✅ Access granted for {user['email']}")
             
             request.session['user'] = user
             

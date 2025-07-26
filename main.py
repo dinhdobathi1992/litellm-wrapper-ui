@@ -58,10 +58,24 @@ async def login_page(request: Request):
         return RedirectResponse(url="/", status_code=302)
     
     error = request.query_params.get("error")
+    error_message = request.query_params.get("message", "")
+    
+    # Handle different error types
+    if error == "access_denied":
+        error_display = f"Access Denied: {error_message}"
+    elif error == "invalid_state":
+        error_display = "Invalid authentication state. Please try again."
+    elif error == "no_code":
+        error_display = "Authentication failed. Please try again."
+    elif error == "auth_failed":
+        error_display = "Authentication failed. Please try again."
+    else:
+        error_display = error if error else None
+    
     return templates.TemplateResponse("login.html", {
         "request": request, 
         "version": VERSION,
-        "error": error
+        "error": error_display
     })
 
 @app.get("/auth/google")
