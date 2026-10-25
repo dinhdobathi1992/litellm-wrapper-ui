@@ -9,7 +9,7 @@ itsdangerous==2.1.2
 # PDF processing
 PyPDF2==3.0.1
 # Image processing
-Pillow==11.3.0
+Pillow==13.0.0
 # Additional file format support
 python-docx==1.2.0
 openpyxl==3.1.5 
